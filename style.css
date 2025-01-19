@@ -1,0 +1,229 @@
+:root {
+    --primary-color: #1b2838;
+    --secondary-color: #66c0f4;
+    --text-color: #c7d5e0;
+    --background-color: #2a475e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.screen {
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input[type="password"] {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#file-upload {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#file-upload label {
+    display: inline-block;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#file-upload input[type="file"] {
+    display: none;
+}
+
+.account-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--primary-color);
+    margin: 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.account-item:hover {
+    background-color: rgba(27, 40, 56, 0.8);
+}
+
+.account-item:active {
+    transform: scale(0.98);
+}
+
+.account-item.copied::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--secondary-color);
+    opacity: 0.2;
+    animation: flash 0.2s ease-out;
+}
+
+@keyframes flash {
+    from {
+        opacity: 0.2;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.account-info {
+    flex-grow: 1;
+}
+
+.account-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.code {
+    font-family: monospace;
+    font-size: 1.2em;
+    color: var(--secondary-color);
+}
+
+.timer {
+    width: 30px;
+    height: 30px;
+    margin-left: 15px;
+}
+
+.info-text {
+    margin: 15px 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+    color: var(--text-color);
+    opacity: 0.8;
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.danger-button {
+    background-color: #c33;
+    color: white;
+    margin-top: 10px;
+}
+
+.danger-button:hover {
+    background-color: #b22;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.secondary-button {
+    background-color: var(--background-color);
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.secondary-button:hover {
+    background-color: rgba(102, 192, 244, 0.1);
+}
+
+.icon {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.account-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.steam-id {
+    font-size: 0.8em;
+    opacity: 0.6;
+    font-family: monospace;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+} 

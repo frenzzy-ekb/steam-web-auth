@@ -1,0 +1,18 @@
+{
+    "name": "Steam Guard Generator",
+    "short_name": "Steam Web Guard",
+    "description": "Progressive Web App for Steam Guard codes generation offline",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#1b2838",
+    "theme_color": "#1b2838",
+    "icons": [
+        {
+            "src": "icon-512.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+} 

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval'">
+    <title>Steam Guard Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1b2838">
+    <meta name="description" content="Генератор кодов Steam Guard">
+</head>
+<body>
+    <div class="container">
+        <div id="login-screen" class="screen">
+            <h1>Steam Guard Generator</h1>
+            <form id="password-form" class="hidden">
+                <input type="password" id="password" placeholder="Введите пароль" required>
+                <button type="submit">Войти</button>
+                <button type="button" id="reset-button" class="danger-button">Сбросить все данные</button>
+            </form>
+            <form id="create-password-form" class="hidden">
+                <input type="password" id="new-password" placeholder="Создайте пароль" required>
+                <input type="password" id="confirm-password" placeholder="Подтвердите пароль" required>
+                <p class="info-text">
+                    Этот пароль будет использоваться для шифрования ваших Steam Guard кодов.
+                    Пароль нигде не сохраняется, поэтому запомните его.
+                    В случае утери пароля вам придется заново импортировать все аккаунты.
+                </p>
+                <button type="submit">Создать</button>
+            </form>
+            <div id="file-upload" class="hidden">
+                <input type="file" id="maFile" accept=".maFile">
+                <label for="maFile">Выберите maFile</label>
+            </div>
+        </div>
+        <div id="codes-screen" class="screen hidden">
+            <div class="header">
+                <h2>Коды авторизации</h2>
+                <button id="add-account" class="secondary-button">
+                    <span class="icon">+</span> Добавить аккаунт
+                </button>
+            </div>
+            <div id="accounts-list"></div>
+            <input type="file" id="add-maFile" accept=".maFile" class="hidden">
+        </div>
+    </div>
+    <div id="toast" class="toast">Код скопирован</div>
+    <script src="crypto.js"></script>
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js', { scope: './' });
+        }
+    </script>
+</body>
+</html> 
