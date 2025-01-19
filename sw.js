@@ -1,13 +1,12 @@
 const CACHE_NAME = 'steam-guard-v1';
 const ASSETS = [
-    './',
-    './favicon.ico',
-    './index.html',
-    './style.css',
-    './app.js',
-    './crypto.js',
-    './icon-512.svg',
-    './manifest.json'
+    '.',
+    'index.html',
+    'style.css',
+    'app.js',
+    'crypto.js',
+    'icon-512.svg',
+    'manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -32,6 +31,9 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+    const url = new URL(event.request.url);
+    const relativePath = url.pathname.replace(/^\/[^/]+\//, '/');
+
     event.respondWith(
         fetch(event.request)
             .catch(() => {
@@ -42,7 +44,7 @@ self.addEventListener('fetch', (event) => {
                         }
                         
                         if (event.request.mode === 'navigate') {
-                            return caches.match('./index.html');
+                            return caches.match('index.html');
                         }
                         return new Response('', {
                             status: 404,
