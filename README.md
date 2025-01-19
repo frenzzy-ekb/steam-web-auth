@@ -13,7 +13,7 @@ Progressive Web App для генерации кодов Steam Guard в офла
 
 ## Использование
 
-1. Откройте [Steam Web Guard](https://frenzzy-ekb.github.io/steam-web-guard/)
+1. Откройте [Steam Web Guard](https://frenzzy-ekb.github.io/steam-web-auth/)
 2. Создайте пароль для шифрования данных
 3. Импортируйте maFile из Steam Desktop Authenticator
 4. Готово! Теперь у вас есть доступ к кодам Steam Guard
