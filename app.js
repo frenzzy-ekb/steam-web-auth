@@ -2,8 +2,11 @@ class SteamGuardApp {
     constructor() {
         this.accounts = [];
         this.key = null;
+        this.lastActivityTime = Date.now();
+        this.DEFAULT_INACTIVITY_TIMEOUT = 1 * 60 * 1000;
         this.setupEventListeners();
         this.checkInitialState();
+        this.startInactivityCheck();
     }
 
     setupEventListeners() {
@@ -34,6 +37,16 @@ class SteamGuardApp {
                 this.resetApp();
             }
         });
+
+        const updateLastActivity = () => {
+            if (this.key) {
+                this.lastActivityTime = Date.now();
+            }
+        };
+
+        ['click', 'keypress', 'mousemove', 'touchstart'].forEach(eventType => {
+            document.addEventListener(eventType, updateLastActivity);
+        });
     }
 
     async checkInitialState() {
@@ -55,7 +68,7 @@ class SteamGuardApp {
         const confirmPassword = document.getElementById('confirm-password').value;
 
         if (newPassword !== confirmPassword) {
-            alert('Пароли не совпадают');
+            this.showToast('Пароли не совпадают', 'error');
             return;
         }
 
@@ -74,7 +87,7 @@ class SteamGuardApp {
                 this.accounts = await SteamGuardCrypto.decrypt(JSON.parse(encrypted), this.key);
                 this.showCodesScreen();
             } catch (error) {
-                alert('Неверный пароль');
+                this.showToast('Неверный пароль', 'error');
             }
         }
     }
@@ -135,14 +148,37 @@ class SteamGuardApp {
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('codes-screen').classList.remove('hidden');
         this.updateCodes();
+        this.lastActivityTime = Date.now();
     }
 
-    showToast() {
-        const toast = document.getElementById('toast');
-        toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 2000);
+    showToast(message, type = 'success', duration = 2000) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+
+        const container = document.getElementById('toast-container');
+        container.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.classList.add(type);
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+        });
+
+        const hideTimeout = setTimeout(() => {
+            toast.classList.add('hide');
+            
+            toast.addEventListener('transitionend', (e) => {
+                if (e.propertyName === 'opacity' && container.contains(toast)) {
+                    container.removeChild(toast);
+                }
+            }, { once: true });
+        }, duration);
+
+        toast._hideTimeout = hideTimeout;
+
+        return toast;
     }
 
     async updateCodes() {
@@ -178,7 +214,7 @@ class SteamGuardApp {
                     navigator.clipboard.writeText(code);
                     accountElement.classList.add('copied');
                     setTimeout(() => accountElement.classList.remove('copied'), 200);
-                    this.showToast();
+                    this.showToast('Код скопирован', 'success');
                 });
 
                 accountsList.appendChild(accountElement);
@@ -198,6 +234,27 @@ class SteamGuardApp {
             
             timerElement.setAttribute('stroke-dasharray', `${(timeRemaining / 30) * 100}, 100`);
         }
+    }
+
+    lockApp() {
+        this.showToast('Сессия завершена из-за неактивности', 'warning', 3000);
+        
+        this.key = null;
+        document.getElementById('password').value = '';
+        
+        document.getElementById('codes-screen').classList.add('hidden');
+        document.getElementById('login-screen').classList.remove('hidden');
+        document.getElementById('password-form').classList.remove('hidden');
+        document.getElementById('create-password-form').classList.add('hidden');
+        document.getElementById('file-upload').classList.add('hidden');
+    }
+
+    startInactivityCheck() {
+        setInterval(() => {
+            if (this.key && Date.now() - this.lastActivityTime >= this.DEFAULT_INACTIVITY_TIMEOUT) {
+                this.lockApp();
+            }
+        }, 10000);
     }
 }
 
