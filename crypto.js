@@ -78,7 +78,7 @@ class SteamGuardCrypto {
         );
 
         const hmac = new Uint8Array(signature);
-        const start = hmac[19] & 0xf;
+        const start = hmac[hmac.length - 1] & 0xf;
         
         let codeInt = (
             ((hmac[start] & 0x7f) << 24) |
@@ -87,7 +87,7 @@ class SteamGuardCrypto {
             (hmac[start + 3] & 0xff)
         );
 
-        const steamChars = '23456BCDFGHJKMNPQRSTUVWXYZ';
+        const steamChars = '23456789BCDFGHJKMNPQRTVWXY';
         let code = '';
         
         for (let i = 0; i < 5; i++) {
